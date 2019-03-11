@@ -1,0 +1,24 @@
+{
+    "alias": "",
+    "apiVersion": "45.0",
+    "deployOptions": {
+        "allowMissingFiles": true,
+        "checkOnly": false,
+        "ignoreWarnings": true,
+        "purgeOnDelete": false,
+        "rollbackOnError": true,
+        "runTests": [],
+        "singlePackage": true,
+        "testLevel": "NoTestRun"
+    },
+    "overwritePackageXML": false,
+    "poll": 2000,
+    "prefix": "",
+    "showTestCoverage": true,
+    "spaDist": "",
+    "src": "src",
+    "staticResourceCacheControl": "Private",
+    "username": "anup081@resourceful-moose-435030.com",
+    "url": "https://login.salesforce.com",
+    "autoCompile": false
+}
