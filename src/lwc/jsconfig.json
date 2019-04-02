@@ -12,12 +12,6 @@
             "c/detail": [
                 "detail/detail.js"
             ],
-            "c/helloWorld": [
-                "helloWorld/helloWorld.js"
-            ],
-            "c/hellooWorld": [
-                "hellooWorld/hellooWorld.js"
-            ],
             "c/list": [
                 "list/list.js"
             ],
@@ -26,9 +20,6 @@
             ],
             "c/selector": [
                 "selector/selector.js"
-            ],
-            "c/simpleCalculator": [
-                "simpleCalculator/simpleCalculator.js"
             ],
             "c/tile": [
                 "tile/tile.js"
