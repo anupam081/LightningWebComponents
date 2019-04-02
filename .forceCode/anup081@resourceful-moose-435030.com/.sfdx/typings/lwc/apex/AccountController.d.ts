@@ -1,3 +1,3 @@
-declare module "@salesforce/apex/AccountController.findByParent" {
-  export default function findByParent(param: {parentId: any}): Promise<any>;
+declare module "@salesforce/apex/AccountController.findAll" {
+  export default function findAll(): Promise<any>;
 }
