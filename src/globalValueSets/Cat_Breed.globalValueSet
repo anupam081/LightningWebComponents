@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Bengal</fullName>
+        <default>false</default>
+        <label>Bengal</label>
+    </customValue>
+    <customValue>
+        <fullName>Sphynx</fullName>
+        <default>false</default>
+        <label>Sphynx</label>
+    </customValue>
+    <customValue>
+        <fullName>British Shorthair</fullName>
+        <default>false</default>
+        <label>British Shorthair</label>
+    </customValue>
+    <masterLabel>Cat Breed</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
