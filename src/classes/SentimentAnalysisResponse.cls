@@ -1,10 +1,11 @@
+/*Einstein Intent API*/
 /**
  * This class is created to receive
  * the Response of Sentiment Analysis
  * API.
  * 
  * @author      Anupam Tripathi
- * @since       22/12/2017
+ * @since       26/12/2017
  * @revisions   N/A
  **/
 global class SentimentAnalysisResponse {
