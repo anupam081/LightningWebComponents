@@ -11,7 +11,8 @@
 # L Comp..................: NA
 # Test Class..............: NA
 # Change Log..............: Intitial Version, 1.0  
-#                           Version 2.0 - support attaching files as well    
+#                           Version 2.0 - support attaching files as well  
+                            Version 2.0 - added loading icon
 ------------------------------------------------------------------------------------>
 <apex:component >
     <apex:attribute name="parentID" description="This is the parentid where the attachment should be uploaded." 
@@ -19,6 +20,35 @@
     <apex:attribute name="filetype" description="filetype = attachment or files" type="String" required="true"/>                                                                                     
     <apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
     <!--apex:includeScript value="{!URLFOR($Resource.Jquery224)}"/-->
+
+    <!-- CSS for loading icon -->
+    <style>
+        .overlay {
+            display: none;
+            height: 100%;
+            left: 0;
+            position: fixed;
+            top: 0;
+            opacity: 0.3;
+            -moz-opacity: 0.3;
+            width: 100%;
+            -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=30)";
+            filter: alpha(opacity=30);
+            background: #000;
+            -khtml-opacity: 0.3;
+            z-index: 1000;
+        }
+ 
+        .loader {
+            background: url('/img/loading32.gif') scroll no-repeat 0 0;
+            width: 32px;
+            height: 32px;
+            position: absolute;
+            left: 50%;
+        }
+    </style>
+    <!-- CSS for loading icon -->
+    
     <script>
     var PARENT_ID = "{!parentID}"; //Set the parent id received through component attribute
     var file_type = "{!filetype}";
@@ -26,11 +56,13 @@
     //console.log('No Conflict = '+$jq);
     jQuery(document).ready(function($jq) {
        $jq('input').on('change', function(e){
+            startLoading();
             for (var i = 0; i < this.files.length; i++) {
                 uploading += 1;
                 upload_file(this.files[i], PARENT_ID, function(err, res){ 
                     if (uploading === uploaded){
                         console.log('uploaded'); //your operation once finish
+                        stopLoading();
                         alert('upload completed');
                     }
                 })
@@ -99,7 +131,20 @@
             }
             reader.readAsDataURL(file);
         }
+        
+        //start of loading icon
+        function startLoading() {
+            $jq('#load_scrl').css('top', $jq(document).scrollTop() + 200);
+            $jq('.loadingBox').show();
+        }
+        
+        //stop of loading icon
+        function stopLoading() {
+            $jq('.loadingBox').hide();
+        }
     });
     </script>
     Add file: <input type="file" multiple="multiple"/>
+    <div id="load_scrl" class="loadingBox loader" style="display:none"> </div>
+    <div class="loadingBox overlay"> </div>
 </apex:component>
