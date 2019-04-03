@@ -4,13 +4,14 @@
 # Created by..............: NIIT
 # Created Date............: 14/08/2018 
 # Last Modified by........: NIIT
-# Last Modified Date......: 14/08/2018
-# Description.............: This component is used to upload multiple attachment on a object record
+# Last Modified Date......: 3/03/2019
+# Description.............: This component is used to upload multiple attachment/files on a object record
 # VF Page.................: NA
 # VF Component............: NMS_uploadAttachmentComponent
 # L Comp..................: NA
 # Test Class..............: NA
-# Change Log..............: Intitial Version, 1.0    
+# Change Log..............: Intitial Version, 1.0  
+#                           Version 2.0 - support attaching files as well    
 ------------------------------------------------------------------------------------>
 <apex:component >
     <apex:attribute name="parentID" description="This is the parentid where the attachment should be uploaded." 
