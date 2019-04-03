@@ -1,6 +1,6 @@
 <!-------------------------------------------------------------------------
 # File....................: NMS_uploadAttachmentComponent
-# Version.................: 1
+# Version.................: 3
 # Created by..............: NIIT
 # Created Date............: 14/08/2018 
 # Last Modified by........: NIIT
@@ -12,7 +12,7 @@
 # Test Class..............: NA
 # Change Log..............: Intitial Version, 1.0  
 #                           Version 2.0 - support attaching files as well  
-                            Version 2.0 - added loading icon
+                            Version 3.0 - added loading icon
 ------------------------------------------------------------------------------------>
 <apex:component >
     <apex:attribute name="parentID" description="This is the parentid where the attachment should be uploaded." 
