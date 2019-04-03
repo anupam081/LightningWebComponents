@@ -1,0 +1,7 @@
+<apex:page >
+  <apex:form >
+  <c:uploadMultipleAttachments parentID="0039000001nr2Ka" filetype="files"/>
+  
+      
+  </apex:form>
+</apex:page>

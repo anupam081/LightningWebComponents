@@ -15,10 +15,12 @@
 <apex:component >
     <apex:attribute name="parentID" description="This is the parentid where the attachment should be uploaded." 
                                                                                             type="String" required="true"/>
+    <apex:attribute name="filetype" description="filetype = attachment or files" type="String" required="true"/>                                                                                     
     <apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
     <!--apex:includeScript value="{!URLFOR($Resource.Jquery224)}"/-->
     <script>
     var PARENT_ID = "{!parentID}"; //Set the parent id received through component attribute
+    var file_type = "{!filetype}";
     var $jq = jQuery.noConflict();
     //console.log('No Conflict = '+$jq);
     jQuery(document).ready(function($jq) {
@@ -37,14 +39,27 @@
         var uploaded = 0;
         var upload_file = function(file, parentId, callback) {
             filetoBase64(file, function(err, content){
-                var attachment_object = {
-                    parentId: parentId,
-                    Body: content, 
-                    Name: file.name, 
-                    ContentType: file.type 
-                };
+                var attachment_object;
+                var urll;
+                if(file_type === "attachment"){
+                    attachment_object = {
+                        parentId: parentId,
+                        Body: content, 
+                        Name: file.name, 
+                        ContentType: file.type 
+                    };
+                    urll = 'Attachment';
+               }else{
+                    attachment_object = {
+                        FirstPublishLocationId : parentId,                        
+                        VersionData : content, 
+                        Title: file.name,
+                        PathOnClient:file.name                        
+                    };
+                    urll = 'ContentVersion';
+               }
                 $jq.ajax({
-                    url: '/services/data/v38.0/sobjects/Attachment',
+                    url: '/services/data/v38.0/sobjects/'+urll,
                     data: JSON.stringify(attachment_object),
                     type: 'POST',
                     processData: false,

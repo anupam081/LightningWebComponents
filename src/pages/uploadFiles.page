@@ -1,0 +1,134 @@
+<apex:page>
+  
+    <head>
+        <!--<script src="{!$Resource.jquery224}"></script>  https://jquery.com/ -->
+        <apex:includeScript value="https://code.jquery.com/jquery-2.2.4.js"/>
+       <!-- <script src="{!$Resource.jsforce170}"></script>  https://jsforce.github.io/ -->
+        <script src="//cdnjs.cloudflare.com/ajax/libs/jsforce/1.9.1/jsforce.min.js"></script>
+        <script>$j = jQuery.noConflict();</script>
+    </head>
+  
+    <body> 
+        <form>
+            <input type="file" id="fileInput" onchange="uploadFile();"/>
+        </form>
+    </body>
+  
+    <script>
+    
+        var conn = new jsforce.Connection({ accessToken: '{!$Api.Session_Id}' });
+        /**
+         * Uses Chatter REST API to upload files up to 2GB.
+         */
+        function uploadFile() {
+            // ... show waiting indicator
+            console.log("inside  upload file");
+            var fileInput = $j('#fileInput');
+            if ( $j.trim( fileInput.val() ).length == 0 ) {
+                // ... hide waiting indicator
+                return;
+            }
+            // https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+            var file = fileInput[0].files[0];
+            var fileName = getFileNameWithExtension( file );
+            var reader = new FileReader();
+            reader.addEventListener('load', function() {
+                var data = reader.result.split(',')[1];
+                saveFile( fileName, data, '0039000001nr2Ka' );
+            });
+            reader.readAsDataURL( file );
+        }
+        /**
+         * Saves the file asynchronously to Salesforce and shares it to the record.
+         *
+         * @param fileName
+         *      Name of the file, for best results should include extension (e.g. 'file.txt')
+         * @param base64
+         *      Base64 encoded file data
+         * @param recordId
+         *      The Salesforce record to share the file to
+         *
+         * Returns a promise per the jsforce library.
+         */
+        function saveFile( fileName, base64, recordId ) {
+            var path = '/services/data/v40.0';
+            return conn.requestPost( path + '/composite/', {
+                'allOrNone' : true,
+                'compositeRequest' : [
+                    {
+                        'method' : 'POST',
+                        'url' : path + '/sobjects/ContentVersion',
+                        'referenceId' : 'newFile',
+                        'body' : {
+                            'Title' : fileName,
+                            'PathOnClient' : fileName,
+                            'VersionData' : base64,
+                            'FirstPublishLocationId' : recordId
+                        }
+                    }
+                ]
+            })
+            .then( validateCompositeResponse )
+            .then( function( response ) {
+                // get new file id
+                var contentVersionId = null;
+                for ( var i = 0; i < response.compositeResponse.length; i++ ) {
+                    if ( response.compositeResponse[i].referenceId === 'newFile' ) {
+                        contentVersionId = response.compositeResponse[i].body.id;
+                        break;
+                    }
+                }
+                // ... do something with the new file id
+            }).catch( function( err ) {
+                console.error( err );
+                // ... show error to user
+            }).then( function() {
+                // this last 'then' after the 'catch' acts like a finally block of try..catch..finally
+                // https://stackoverflow.com/questions/35999072/what-is-the-equivalent-of-bluebird-promise-finally-in-native-es6-promises
+                // ... hide waiting indicator
+            });
+        }
+      
+        /**
+         * Gets the name with extension of a file input reference, like 'file.txt'.
+         * Replaces any other periods (.) with underscores (_) otherwise Salesforce
+         * ignores all text in the filename after the first dot.
+         *
+         * @param file
+         *      js reference of a file retrieved from an html input element
+         *      e.g. fileInput.files[0]
+         */
+        function getFileNameWithExtension( file ) {
+            var extIndex = file.name.lastIndexOf( '.' );
+            var extension = file.name.substring( extIndex );
+            var fileName = file.name.substring( 0, extIndex );
+                fileName = fileName.replace( /\./g, '_' );
+                fileName += extension;
+            return fileName;
+        }
+      
+        /**
+         * Checks each sub-response for an error code
+         * and throws error if finds one, else does nothing.
+         */
+        function validateCompositeResponse( response ) {
+            return new Promise( function( resolve, reject ) {
+          
+                console.log('validating composite response');
+                for ( var i = 0; i < response.compositeResponse.length; i++ ) {
+                    var body = response.compositeResponse[i].body[0];
+                    // ignore the 'processing halted' messages as that just indicates
+                    // that sub-request wasn't the one that blew up, keep looking
+                    if ( body && body.errorCode && body.errorCode != 'PROCESSING_HALTED' ) {
+                        reject( body.message );
+                    }
+                }
+              
+                resolve( response );
+              
+            });
+        }
+      
+    </script>
+  
+</apex:page>
