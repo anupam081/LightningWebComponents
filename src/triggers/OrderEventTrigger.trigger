@@ -1,6 +1,6 @@
 trigger OrderEventTrigger on Order_Event__e (after insert) {
    
-    // List to hold all cases to be created.
+    // List to hold all cases to be created. to be test
     List<task> tasks = new List<task>();
     
     // Get queue Id for case owner
