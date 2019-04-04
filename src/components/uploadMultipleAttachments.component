@@ -1,9 +1,9 @@
 <!-------------------------------------------------------------------------
 # File....................: NMS_uploadAttachmentComponent
 # Version.................: 3
-# Created by..............: NIIT
+# Created by..............: Anupam Tripathi
 # Created Date............: 14/08/2018 
-# Last Modified by........: NIIT
+# Last Modified by........: Anupam Tripathi
 # Last Modified Date......: 3/03/2019
 # Description.............: This component is used to upload multiple attachment/files on a object record
 # VF Page.................: NA
@@ -102,13 +102,14 @@
                     headers: {'Authorization': 'Bearer {!$Api.Session_ID}', 'Content-Type': 'application/json'},
                     xhr: function(){
                         var xhr = new window.XMLHttpRequest();
-                        //Upload progress
+                        //Upload progress                        
                         xhr.upload.addEventListener("progress", function(evt){
                             if (evt.lengthComputable) {
                                 var percentComplete = evt.loaded / evt.total;
                                 //Do something with upload progress
                             }
                         }, false);
+                        console.log('response header = '+xhr.getAllResponseHeaders());
                         return xhr;
                     },
                     success: function(response) {
